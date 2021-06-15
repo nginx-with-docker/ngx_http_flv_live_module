@@ -1,0 +1,21 @@
+ARG NGINX_VERSION=1.21.0
+FROM soulteary/prebuilt-nginx-modules:base-${NGINX_VERSION} AS Builder
+
+ARG MODULE_CHECKSUM=7ec720cfba9c5d7d10b8317e3b169d93d0b5e6fd
+ARG MODULE_VERSION=1.2.9
+ARG MODULE_NAME=nginx-http-flv-module-src
+ARG MODULE_SOURCE=https://github.com/nginx-with-docker/nginx-http-flv-module-src
+
+RUN cd /usr/src && \
+    curl -L "${MODULE_SOURCE}/archive/refs/tags/v${MODULE_VERSION}.tar.gz" -o "${MODULE_VERSION}.tar.gz" && \
+    echo "${MODULE_CHECKSUM}  ${MODULE_VERSION}.tar.gz" | shasum -c && \
+    tar -zxC /usr/src -f ${MODULE_VERSION}.tar.gz && \
+    mv ${MODULE_NAME}-${MODULE_VERSION}/ ${MODULE_NAME} && \
+    cd /usr/src/nginx && \
+    echo $CONFARGS && \
+    ./configure --with-compat $CONFARGS --add-dynamic-module=../${MODULE_NAME}/ && \
+    make modules
+
+FROM scratch
+
+COPY --from=Builder /usr/src/nginx/objs/ngx_http_flv_live_module.so /
