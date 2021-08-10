@@ -16,6 +16,14 @@ Media streaming server based on nginx-rtmp-module. In addtion to the features ng
     </thead>
     <tbody>
         <tr>
+            <td>1.21.1</td>
+            <td>1.2.9</td>
+            <td><ul>
+                <li>docker pull soulteary/prebuilt-nginx-modules:ngx-1.21.1-flv-live-1.2.9</li>
+                <li>docker pull soulteary/prebuilt-nginx-modules:ngx-1.21.1-flv-live-1.2.9-alpine</li>
+            </ul></td>
+        </tr>
+        <tr>
             <td>1.21.0</td>
             <td>1.2.9</td>
             <td><ul>
